@@ -8,14 +8,15 @@
 class AbstractOdeSolver
 {
     protected:
-        double m_stepSize;
-        double m_initTime;
-        double m_finalTime;
+        double stepSize;
+        double initTime;
+        double finalTime;
         
         std::string filename;       
-        std::vector <double> m_initValues;
-        std::vector <double> (*SystemEquations)(std::vector<double>, double);
-
+        std::vector <double> initValues;
+        std::vector <double> (*f) (std::vector <double>, double);
+        virtual std::vector <double> SystemEquations(std::vector<double> state, double t);
+        
         virtual void iterate (std::vector<double> &, double t)=0;
     public:
         void setStepSize(double h); 

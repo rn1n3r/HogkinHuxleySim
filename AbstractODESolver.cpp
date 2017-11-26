@@ -5,21 +5,26 @@
 #include "AbstractODESolver.h"
 #include <fstream>
 #include <iostream>
-
+#include <vector>
 // Setter function for step size
 void AbstractOdeSolver::setStepSize(double h) { 
-    m_stepSize = h; 
+    stepSize = h; 
 }
 
 // Setter function for initial and final time point
 void AbstractOdeSolver::setTimeInterval(double t0, double t1) {
-    m_initTime = t0; 
-    m_finalTime = t1;
+    initTime = t0; 
+    finalTime = t1;
 };
 
 // Setter function for the initial value
 void AbstractOdeSolver::setInitialValue(std::vector<double> initValues ) {
-    m_initValues = initValues;
+    AbstractOdeSolver::initValues = initValues;
+}
+
+std::vector<double> AbstractOdeSolver::SystemEquations (std::vector<double> state, double t) {
+
+    return AbstractOdeSolver::f(state, t);
 }
 
 // Solve the ODE
@@ -31,15 +36,15 @@ void AbstractOdeSolver::setInitialValue(std::vector<double> initValues ) {
 // function, the SolveEquation method can be used by any 
 // inherited class that might use a different method
 double AbstractOdeSolver::SolveEquation () {
-    double t = m_initTime;
-    std::vector<double> state = m_initValues;
+    double t = initTime;
+    std::vector<double> state = initValues;
 
     double sqerror = 0;
 
     std::ofstream output(filename);
 
     // Calculate the number of steps 
-    int steps =  (int)((m_finalTime - m_initTime)/m_stepSize);
+    int steps =  (int)((finalTime - initTime)/stepSize);
 
     // Use a for loop over the integer value for number
     // of steps to avoid accumulating error (in t)
@@ -65,7 +70,7 @@ double AbstractOdeSolver::SolveEquation () {
         }
         // Iterate 
         iterate(state, t);
-        t += m_stepSize;
+        t += stepSize;
     }
 
     // Output message
