@@ -81,11 +81,15 @@ int main() {
     
     RungeKuttaSolver test (hh, 0.0, 20.0, initial, 0.01, "hh.txt");   
     
+    sys_state initialLorenz (3);
+    initialLorenz[0] = initialLorenz[1] = initialLorenz[2] = 10.0;
+    RungeKuttaSolver lorenzTest (lorenz, 0.0, 10.0, initialLorenz, 0.01, "lorenz.txt"); 
     //sys_state initial (2);
     //initial[0] = 3;
     //initial[1] = 1; 
     //RungeKuttaSolver test (f, 0, 1, initial, 0.01);
     test.SolveEquation(); 
+    lorenzTest.SolveEquation();
     return 0;
 
 

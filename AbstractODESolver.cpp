@@ -1,4 +1,3 @@
-// Assignment 4, Problem 2
 // Abstract class for an ODE solver
 // Functions to set step size, time interval
 // and initial values
@@ -27,9 +26,7 @@ void AbstractOdeSolver::setInitialValue(std::vector<double> initValues ) {
 // Calculates the steps for the interval and iterates through
 // the time interval. Outputs the solution to a textfile 
 // specified by the member function "filename"
-// If the findError flag is true, will return the sum of squared
-// error between this solution and the true solution
-//
+
 // Since the iteration function is implemented as a member virtual
 // function, the SolveEquation method can be used by any 
 // inherited class that might use a different method
@@ -55,7 +52,7 @@ double AbstractOdeSolver::SolveEquation () {
                 if (j < state.size() - 1)
                     output << " ";
             }
-            output << t << " " << state[0] << std::endl;
+            output << std::endl;
         }
         else {
             std::cout << t << " ";
@@ -78,8 +75,3 @@ double AbstractOdeSolver::SolveEquation () {
     output.close();
     return 0;
 }
-
-
-
-
-

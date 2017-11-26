@@ -11,7 +11,7 @@ class AbstractOdeSolver
         double m_stepSize;
         double m_initTime;
         double m_finalTime;
-        bool findError = false;
+        
         std::string filename;       
         std::vector <double> m_initValues;
         std::vector <double> (*SystemEquations)(std::vector<double>, double);
