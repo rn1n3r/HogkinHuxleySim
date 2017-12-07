@@ -1,7 +1,12 @@
+// Class to represent the Hodgkin Huxley model
+
 #include<cmath>
 #include "HHSim.h"
 #include <vector>
 
+// Functions to represent the gating mechanism
+// of the ion channels. These are in the form of
+// Boltzmann equations
 double am (double v) {
     return 0.1 * (25 - v) / (exp(0.1 * (25 - v)) - 1); 
 }
@@ -30,14 +35,14 @@ double noCurrent (double t) {
     return 0;
 }
 
+// Equations specifically defined to be in the HH form
 std::vector<double> HHSim::SystemEquations(std::vector<double> vnmh, double t) {
 
-    const double I = 0; 
 
     sys_state ddt(4);
     ddt[0] = (-gK * pow(vnmh[1], 4) * (vnmh[0] - VK) 
              -gNa * pow(vnmh[2], 3) * vnmh[3]* (vnmh[0] - VNa)
-             -gL *(vnmh[0] - VL) + I)/C;
+             -gL *(vnmh[0] - VL) + I(t))/C;
 
     ddt[1] = an(vnmh[0]) * (1 - vnmh[1]) - bn(vnmh[0]) * vnmh[1];
     ddt[2] = am(vnmh[0]) * (1 - vnmh[2]) - bm(vnmh[0]) * vnmh[2];
@@ -45,9 +50,9 @@ std::vector<double> HHSim::SystemEquations(std::vector<double> vnmh, double t) {
     return ddt;
 }
 
-
+// Constructor
 HHSim::HHSim(double t0, double t1, std::vector<double> initState, double h,
-             std::string filename, double gNa, double gK,
+             std::string filename, double (*I)(double), double gNa, double gK,
              double gL, double VNa, double VK, 
              double VL, double C) : RungeKuttaSolver(NULL, t0, t1, initState, h, filename) 
 
@@ -59,5 +64,10 @@ HHSim::HHSim(double t0, double t1, std::vector<double> initState, double h,
     HHSim::VL = VL;
     HHSim::VK = VK;
     HHSim::C = C;
+    
+    if (!I)
+        HHSim::I = noCurrent;
+    else
+        HHSim::I = I;
 }
 

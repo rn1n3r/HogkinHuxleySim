@@ -58,7 +58,7 @@ void RungeKuttaSolver::iterate (std::vector<double> &state, double t) {
     ddt = SystemEquations(tempState, t+0.5*stepSize);
     for (int i = 0; i < n_eqs; i++) {
         coeffs[i] = stepSize * ddt[i];
-        tempState[i] += 0.5*coeffs[i];
+        tempState[i] = state[i] + 0.5*coeffs[i];
         coeffSum[i] += coeffs[i]*2;
     }
    
@@ -66,7 +66,7 @@ void RungeKuttaSolver::iterate (std::vector<double> &state, double t) {
     ddt = SystemEquations(tempState, t+0.5*stepSize); 
     for (int i = 0; i < n_eqs; i++) {
         coeffs[i] = stepSize * ddt[i];
-        tempState[i] += coeffs[i];
+        tempState[i] = state[i] + coeffs[i];
         coeffSum[i] += coeffs[i]*2;
     }
 

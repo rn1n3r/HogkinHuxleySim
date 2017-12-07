@@ -39,13 +39,11 @@ double AbstractOdeSolver::SolveEquation () {
     double t = initTime;
     std::vector<double> state = initValues;
 
-    double sqerror = 0;
-
     std::ofstream output(filename);
 
     // Calculate the number of steps 
     int steps =  (int)((finalTime - initTime)/stepSize);
-
+    
     // Use a for loop over the integer value for number
     // of steps to avoid accumulating error (in t)
     for (int i = 0; i <= steps; i++) {
